@@ -98,7 +98,7 @@ export async function fetchFilteredInvoices(
 
   try {
     const client = await db.connect();
-    const invoices = await client.sql<InvoicesTable[]>`
+    const invoices = await client.sql<InvoicesTable>`
       SELECT
         invoices.id,
         invoices.amount,
@@ -120,7 +120,7 @@ export async function fetchFilteredInvoices(
     `;
     client.release();
 
-    return invoices;
+    return invoices.rows;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch invoices.');
@@ -180,7 +180,7 @@ export async function fetchInvoiceById(id: string) {
 export async function fetchCustomers() {
   try {
     const client = await db.connect();
-    const customers = await client.sql<CustomerField[]>`
+    const customers = await client.sql<CustomerField>`
       SELECT
         id,
         name
@@ -189,7 +189,7 @@ export async function fetchCustomers() {
     `;
     client.release();
 
-    return customers;
+    return customers.rows;
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all customers.');
